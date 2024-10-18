@@ -502,7 +502,7 @@ $ B = sum_(m=1)^oo A_m quad eq.def quad norm(B - sum_(m=1)^N A_m) ->_(N->oo) 0 $
   $ exp A = e^A = sum_(j=0)^oo 1/j! A^j $
 ]
 
-#bbox[Лем   ма][
+#bbox[Лемма][
   $ forall A in RR^(n times n) "матричный ряд" e^A "сходится" $
 ][
   $ S_m = sum_(j=0)^m 1/j! A^j $
@@ -683,3 +683,172 @@ $ B = lambda I + H,
 ) $
   
 ]
+
+`18 Октября 2024`
+
+$ Phi(t) = e^(t A) = S "diag"{e^(t J_0), e^(t J_1), dots, e^(t J_q)} S^(-1) $
+
+$ e^(t J_k) = e^(t lambda_k) mat(
+  1, t, 1/2! t^2, dots, t^(r_k - 1)/(r_k - 1)!;
+  ,1,t,dots.down;
+  ,,1,dots.down,;
+  ,,,dots.down,t;
+  ,,,,1
+) $
+
+$ r_k "кратность собственных значений" lambda_k $
+
+=== Метод Эйлера
+
+Пусть $lambda$ собственное число $A$ кратности $r$.
+
+$lambda$ соответствует решение (1)
+
+#cbox[
+$ x(t) = e^(lambda t) Q(t), quad Q - "многочлен, степени" <= r - 1 $ 
+]
+
+/1/
+
+#bbbox[Пример 1][
+
+$ cases(
+    der(x_1) = 4x_1 - x_2,
+    der(x_2) = 5x_1 + 2 x_2
+  ) $
+
+$
+  A = mat(
+    4, -1; 5, 2
+  )
+$
+
+$ matdet(4-lambda, -1; 5, 2-lambda) = 0 <=> lambda = 3 plus.minus 2i $
+
+$ phi(t) = mat(a;b) e^((3+2i)t) $
+
+$ (3+ 2i) vec(a, b) cancel(e^dots) = vec(4a - b, 5a + 2b) cancel(e^...) = A phi $
+
+$ 
+  a = 1, b = 1 - 2i
+$
+
+$ phi(t) = vec(1, 1-2i) e^((3+2i)t) = vec(1, 1-2i) e^(3t) (cos(2t) + i sin(2t)) $
+
+$ x(t) = c_1 e^(3 t) vec(cos 2 t, cos 2t + 2 sin 2t) + c_2 e^(3 t) vec(sin 2t, -2cos 2 t + sin t)  $
+]
+
+#bbbox[Пример 2][
+  $ der(x) = A x, space A = mat(
+    2, 1, 1;
+    -2, 0, -1;
+    2, 1, 2
+  )
+  // der(x)_1 = 2x_1 + x_2 + x_3 
+  
+  $
+
+  $ (lambda - 2)^1(lambda - 1)^2 = 0 $
+
+  + $lambda=2$
+    $ phi(t) = vec(a, b, c) e^(2 t) $
+    $ 2 vec(a, b, c)  = vec(2a + b + c, -2a - c, 2a + b + 2c) $
+
+    $a = 1, c=2, b = -2 $
+
+    $phi(t) = vec(1, -2, 2) e^(2 t)$
+
+  + $lambda =1, space r = 2$
+    $ phi(t) = vec(
+      alpha_1 t + alpha_2,
+      beta_1 t + beta_2,
+      gamma_1 t + gamma_2
+    ) e^t $
+
+    Первая строчка:
+
+    $ (alpha_1 + (alpha_1 t + alpha_2)) e^t = (2(alpha_1t + alpha_2) + beta_1t + beta_2 + gamma_1 t + gamma_2) e^(t) $
+
+    $ cases(
+        alpha_1 + alpha_2 = 2 alpha_2 + beta_2 + gamma_2,
+        alpha_1  = 2 alpha_1 + beta_1 + gamma_1        
+    ) $
+    Вторая строчка:
+    
+    $ beta_1 + beta_1 t + beta_2 = -2(alpha_1 t + alpha_2) - gamma_1 t - gamma_2$
+
+    Третья аналогично:
+
+    $ gamma_1 + gamma_1 t + gamma_2 = 2(alpha_1 t + alpha_2 + beta_1 t + beta_2 + 2(gamma_1 t + gamma_2))$
+
+    Решаем алгебру:
+
+    $ alpha_1 = 0, space
+      beta_1 = - gamma_1, space
+      beta_1 = - alpha_2, space
+      beta_2 = beta_1 - gamma_2$
+
+    $ cases(alpha_1 = 0, space
+     alpha_2 = c_2, space
+     beta_1 = -c_2, space
+     beta_2 = -c_2 - c_3, space
+     gamma_1 = c_1, space
+     gamma_2 = c_3) $
+    
+  $ "Ответ:" x = c_1 e^(2 t) vec(1, -2, 2) + vec(c_2, -c_2 t - (c_2 + c_3), c_2 t + c_3) e^t = \
+  = c_1 e^(2 t) vec(1, -2, 2) + c_2 e^t vec(1, -t -1, t) + c_3 e^t vec(0, -1, 1)
+  $
+    
+]
+
+== Неоднородные системы
+
+$ (1_n) quad der(x) = A x + f(t) $
+$ A in RR^(n times n) $
+$ x(t) = hat(x)(t) + Phi(t) c $
+$ c in RR^n, space hat(x) - "частное решение", space Phi(t)c - "о.р.о.с." $
+
+#note[
+  $ der(x) = A x + k f_1(t) + f_2(t), space k = "const" $
+  
+  $ der(x)^((1)) = A x^((1)) + f_1(t) $
+
+  $ der(x)^((2)) = A x^((2)) + f_2(t) $
+
+  $ => x = k x^((1)) + x^((2)) $
+]
+
+Неоднородность в виде квазимногочлена:
+
+$ f(t) = e^(mu t) P(t), space deg P = m, space P(t) = vec(P_1(t), dots.v, P_n (t)) $
+
+$ mu in CC $
+
+#note[
+  $ "Пусть" f(t) = sin 3 t vec(t^2, t) $
+  $ tilde e^(3 i t) vec(t^2, t) $
+]
+
+=== Нерезонансный случай
+
+$ mu "не является собственным значением" A$
+
+$ der(x) = A x + e^(mu t) P(t)$
+
+$ hat(x)(t) = e^(mu t) Q(t), space deg Q <= m, space Q(t) = sum_(j=0)^m q_j t^j, space q_j in RR^n$
+
+$ (mu Q + der(Q)) cancel(e^(mu t)) = A e^(mu t) Q + cancel(e^(mu t)) P$
+
+#lbox[
+$ (mu I - A)Q = P - der(Q) $
+]
+
+$ P(t) = sum_(j=0)^m p_j t^j$
+
+$ t^m: (mu I = A) q_m = p_m$
+
+$ q_m = (mu I - A)^(-1) p_m$
+
+$ t^(m-1): (mu I - A) q_(m-1) = p_(m-1) - m q_m = p_(m-1) - m (mu I - A)^(-1) p_m$
+
+=== Резонансный случай

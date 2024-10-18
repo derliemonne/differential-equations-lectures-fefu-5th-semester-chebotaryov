@@ -32,6 +32,10 @@
 
 #let bbox(head, ..content) = showybox(title: head,  ..content)
 
+#let bbbox(head, ..content) = showybox(breakable: true, title: head,  ..content)
+
+
+
 #let note(..content) = bbox("Замечание", ..content)
 
 #let def(..content) = bbox("Определение", ..content)
