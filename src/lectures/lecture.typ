@@ -852,3 +852,156 @@ $ q_m = (mu I - A)^(-1) p_m$
 $ t^(m-1): (mu I - A) q_(m-1) = p_(m-1) - m q_m = p_(m-1) - m (mu I - A)^(-1) p_m$
 
 === Резонансный случай
+`25 Октября 2024`
+
+
+$ exists lambda_k - "собственное значение" A, space mu = lambda_k $
+
+$ hat(x) (t) = e^(mu t) Q(t)  $
+
+$ &deg Q <= m + l, space l - "максимальный размер Жордановской клетки,"\
+&"соответствуеющей" lambda_k $
+
+$ l <= "кратности собственного значения" $
+
+#bbbox[Пример 1][
+  $ cases(
+      der(x)_1 = 2x_1 + x_2 + e^(2 t),
+      der(x)_2 = 3x_1 + 4x_2
+  ) $
+
+  $ A = mat(2, 1; 3, 4) $
+
+  $ matdet(2-lambda, 1; 3, 4-lambda) = 0 wide lambda_1 = 1, space lambda_2 = 5 $
+
+  $ f(t) = e^(2 t) vec(1, 0), space m=0 $
+
+  $ hat(x) (t) = e^(2 t) vec(p, q) $
+
+  Подставляем в задачу и получаем:
+  
+  $ q = -1, space p = 2 / 3 $
+
+  $ hat(x) = e^(2 t) vec(2/3, -1) $
+
+  $ A vec(a, b) = 1 vec(a, b) $
+
+  $ cases(
+      2a + b = a,
+      3a + 4b = b
+  )
+  $
+
+  $ vec(1, -1) - "собственный вектор, соответсветсвтуеющий "  lambda = 1 $
+
+  $ vec(1, 3) quad tilde quad lambda = 5 $
+
+  $ x(t) = c_1 e^t vec(1, -1) + c_2 e^(5 t) vec(1,3) + e^(2 t) vec(2/3, -1) $
+
+  Задача тов. Коши:
+
+  $ x(0) = 0 $
+
+  $ c_1 vec(1, -1) + c_2 vec(1, 3) + vec(2/3, -1) = 0 $
+  
+  $ c_1 = -3/4, space c_2 = 1/12  $
+
+  Ответ:
+  
+  $ cases(
+    x_1 = -3/4 e^t + 1/12 e^(5 t) + 2/3 e^(2 t),
+    x_2 = 3/4 e^t + 1/4 e^(5 t) - e^(2 t)
+  ) $
+]
+
+#bbbox[Пример 2][
+  $ cases(
+      der(x)_1 = x_2 + epsilon sin t,
+      der(x)_2 = -x_1
+  ), quad t>0 $
+
+  $ x_1 (0) = x_2 (0) = 0 $
+
+  Можно решать при $epsilon = 1$, а потом домножать ответ.
+
+  $ sin t = "Im" e^(i t) $
+
+  $ der(x) = mat(0, 1; -1, 0) x + e^(i t) vec(1, 0) $
+
+  $ matdet( -lambda, 1; -1, -lambda) = 0 <=> lambda^2 +1 =0 <=> lambda = plus.minus i $
+
+  $ A vec(a, b) = i vec(a, b) $
+
+  $ b = i a => vec(1, i) $
+
+  $ x^((0)) = c_1  e^(i t) vec(1,i) + c_2 e^(-i t) vec(1, -i) $
+
+  $ hat(x) (t) = e^(i t) vec(a_1 t + b_1, a_2 t + b_2) $
+
+  Теперь подставляем в задачу и находим четыре числа:
+
+  $ i e^(i t) vec(a_1 t + b_1, a_2 t + b_2) + e^(i t) vec(a_1, a_2) = e^(i t) vec(a_2 t + b_2, -a_1 t - b_1) + e^(i t) vec(1, 0) $
+
+  $ i  vec(a_1 t + b_1, a_2 t + b_2) +  vec(a_1, a_2) =  vec(a_2 t + b_2, -a_1 t - b_1) + vec(1, 0) $
+
+  $ t^1: space i a_1  = a_2, space i a_2 = -a_1 $
+
+  $ t^0: space i b_1 + a_1 = b_2 + 1, space i b_2 + a_2 = -b_1 $
+
+  $ a_1 = 1/2, space a_2 = i/2, space i b_1 = b_2 + 1/2  $
+
+  $ a_1 = 1/2, space a_2 = i/2, space b_1 = 0, space b_2 = -1/2 $
+
+  $ der(x) (t) = e^(i t) vec(1/2 t, i/2 t - 1/2) $  
+
+  $ x(t) = e^(i t) vec(1/2 t, i/2 t - 1/2) + c_1 e^(i t) vec(1, i) + c_2 e^(-i t) vec(1, -i) $
+
+  $ x(0) = 0 <=> cases(
+    c_1 + c_2 = 0,
+    -1/2 + c_1 i -c_2 i = 0
+  ) $
+
+  $ c_1 = -1/4 i, space c_2 = 1/4 i $
+
+  $ x(t) = e^(i t) vec(1/2 t, i/2 t - 1/2) - 1/4 i vec(1, i) e^(i t) + 1/4 i e^(-i t) vec(1, -i) $
+
+  $ "Im" x(t) = vec(
+      1/2 t sin t - 1/4 cos t + 1/4 cos t,
+      1/2 t cos t - 1/2 sin t + 1/4 sin t - 1/4 sin t
+    ) $
+
+  Ответ:
+
+  $ x_1 (t)  = epsilon / 2 t sin t $
+
+  $ x_2 (t) = epsilon / 2 ( t cos t - sin t) $
+    
+]
+
+= Устойчивость решений систем обыкновенных дифференциальных уравнений
+
+== Определение устойчивости и простейшее применение
+
+#cbox["Fur fier kein beer"]
+
+#cbox[
+$ (1) quad der(x) (t) = f(t, x(t)), space t >0 $
+
+$ x(t) = vec(x_1 (t), dots.v, x_n (t)) $
+]
+
+#def[
+  Пусть $x = phi(t), space t >= 0$ --- решение (1).
+  Решение $phi(x)$ называется устойчивым по Ляпунову, если
+  $ forall epsilon > 0 and forall "решения" x = psi(t) "системы (1)," $
+  $ exists delta_epsilon > 0 $
+  $ "такого, что" abs(phi(0) - psi(0)) < delta_epsilon $
+  $ => mod(phi(t) - psi(t)) < epsilon $
+  $ forall t > 0 $
+]
+
+#def[
+  Решение $x = phi(t)$ называется асимптотически устойчивым,
+  если к дополнению к этому,
+  $ lim_(t->oo) abs(phi(t) - psi(t)) = 0 $
+]
