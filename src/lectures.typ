@@ -358,7 +358,7 @@ $x(t) = y(t) = A(t) c space qed$
 
 $ (1) wide der(x) = A(t) x + f(t) where f(t) = vec(f_1(t), dots.v, f_n (t)) equiv.not 0 $
 
-#bbox[Теорема][
+#bbbox[Теорема][
   Пусть $Phi(t) where t in [0, T] -$ фундаментальная система однородной системы.
 
   $x = hat(x)(t) where t in [0, T]-$ частное решение (1)
@@ -408,7 +408,7 @@ $Phi der(c) = f$
 
 $ c(t) = integral_0^t Phi^(-1) (s) f(s) dif s + K where K - " настоящая константа" $
 
-#eg[
+#bbbox[Пример][
   $ cases(
     der(x)_1 = x_2 + 1,
     der(x)_2 = -x_1,
@@ -557,7 +557,7 @@ $ a_n = det(P) $
 $ det( Q- lambda I) = det(S^(-1) ( P - lambda I)S) = det(P - lambda I) $
 У подобных матриц одинаковы и следы и определители.
 
-#def[
+#bbox[Пример][
   $ J = "diag"{J_1, J_2, dots, J_k}  $
   
   #figure(image("image.png", width: 50%))
@@ -710,7 +710,7 @@ $ x(t) = e^(lambda t) Q(t), quad Q - "многочлен, степени" <= r -
 
 /1/
 
-#bbbox[Пример 1][
+#bbox[Пример 1][
 
 $ cases(
     der(x_1) = 4x_1 - x_2,
@@ -984,6 +984,10 @@ $ l <= "кратности собственного значения" $
 
 #cbox["Fur fier kein beer"]
 
+#align(right)[
+  "Fur fier kein beer"\
+]
+
 #cbox[
 $ (1) quad der(x) (t) = f(t, x(t)), space t >0 $
 
@@ -996,7 +1000,7 @@ $ x(t) = vec(x_1 (t), dots.v, x_n (t)) $
   $ forall epsilon > 0 and forall "решения" x = psi(t) "системы (1)," $
   $ exists delta_epsilon > 0 $
   $ "такого, что" abs(phi(0) - psi(0)) < delta_epsilon $
-  $ => mod(phi(t) - psi(t)) < epsilon $
+  $ => abs(phi(t) - psi(t)) < epsilon $
   $ forall t > 0 $
 ]
 
@@ -1005,3 +1009,189 @@ $ x(t) = vec(x_1 (t), dots.v, x_n (t)) $
   если к дополнению к этому,
   $ lim_(t->oo) abs(phi(t) - psi(t)) = 0 $
 ]
+
+`1 Ноября 2024`
+
+Мы рассматриваем систему вида:
+
+$ (1) quad der(x) = f(t, x) where t > 0 $
+
+$ x(t) = vec(x_1 (t), dots.v, x_n (t)), quad f(t, x) = vec(f_1 (t, x), dots.v, f_n (t, x)) $
+
+Предположим, что есть $x^((0)) in RR$. Существует единственное решение (1) при начальных условиях $abs(x(0) - x^((0))) <= r$
+
+#figure(image("image (1).png", width: 60%))
+
+#note[
+  Устойчивость стационарного решения:
+
+  $x^((s)) = "const"$
+
+  $f(t, x^((s))) = 0$
+
+  #figure(image("image (2).png", width:50%))
+]
+
+#note[
+  $y = x - phi$
+
+  $(2) quad der(y) = f(t, y + phi) - f(t, phi)$
+
+  Устойчивость решения $phi$ системы (1) $<=>$ устойчивость решения $y=0$ системы (2).
+]
+
+#bbbox[Пример 1][
+  $ cases(der(x) = x - x^2, x(0) = x_0) $
+
+  Ищем решение:
+  
+  $ x(t) = u(t) e^t $
+
+  $ der(x) = der(u) e^t + cancel(u e^t) = cancel(u e^t) - u^2 e^(2 t) $
+
+  $ der(u) = -u^2 e^t $
+
+  $ integral (dif u) / u^2 = - integral e^t dif t $
+
+  $ -1/u = -e^t + C $
+
+  $ u = 1 /( e^t - C) $
+
+  $ 1 / (1 - C) = x_0 $
+
+  $ C = 1 - 1/x_0 $
+
+  $ x(t) = e^t / (e^t - 1 + 1/x_0)= (x_0 e^t)/(1+x_0 (e^t - 1)) 
+    =( x_0 e^(-t)) / (e^(-2 t) + x_0 (e^(-t) - e^(-2 t))) =\
+    = x_0 / (e^(-t) + x_0 (1 - e^(-t))) -->_(t->oo) 1
+  $
+
+  #figure(image("image (3).png", width: 40%))
+
+  Решение $x_0 = 1$ асимтотически устойчивое.
+
+  Решение $x_0 = 0$ неустойчивое, потому что если придать небольшую флуктуацию, то решение сольётся в экстазе с единичкой не бесконечности.
+]
+
+#bbbox[
+  Пример 2
+][
+  $ cases(
+      der(x) = x - x^2 - k comma space k = "const" > 0,
+      x(0) = x_0
+  ) $
+
+  Стационарное решение $x-x^2 -k = 0$. Дискриминант $1 - 4 k$.
+
+  + $0 < k < 1/4 quad x_(1,2) = (1 plus.minus sqrt(1 - 4 k))/2$
+    #figure(image("image (4).png", width: 50%))
+    $x_2$ устойчивое, $x_1$ неустойчивое.
+
+  + $k = 1/4$
+
+    #figure(image("image (5).png", width: 90%))
+    Не устойчивое.
+
+  + $ k > 1/4$
+
+    Тут производная будет отрицательна, поэтому решения не устойчивые.
+]
+
+== Устойчивость решений однородных линейных систем с постоянными коэффициентами
+
+Объектом изучения будет следующая система:
+
+$ (1) quad der(x) = A x $
+
+$ A in R^(n times n) $
+
+Стационарным решением (не зависящем от времени) будет:
+
+$ x_s = 0 - "устойчиво или нет? будем изучать" $
+
+Пусть собственные значения $A$: $lambda_i = mu_j + i nu_j, space mu_j = "Re" lambda_j$
+
+#bbbox[Лемма 1][
+  Пусть $forall j "Re" lambda_j < 0 $.
+  
+  Тогда $exists M, alpha >0:$
+  
+  $abs(phi(t)) <= M e^(-alpha t) space forall t > 0 where phi - $решение(1)
+
+  #image("image (6).png", width: 50%)
+][
+  $ alpha := 1/2 abs(mu_1) > 0 $
+
+  $ phi(t) = sum_(j=1)^m e^(lambda_j t) P_j (t) where P_j - "многочлен" $
+
+  $ e^(lambda_j t) = e^(mu_j t) dot e^(i nu_j t)  $
+  
+  $ abs(phi(t)) <= sum_(j=1)^m e^(mu_j t) abs(P_j (t)) $
+
+  $ abs(phi(t)) e^(alpha t) <= sum_(j=1)^m e^((alpha + mu_j)t) abs(P_j (t)) <= sum_(j=1)^m e^(-1/2 mu_1 t) abs(P_j (t)) <= M $
+
+  // $ e^(-epsilon t) t^n -->_(t->oo) 0 $ 
+]
+
+#bbbox[Лемма 2][
+  Пусть $phi = phi(t), space t>0 - $ решение задачи Коши ($der(x) = A x, space x(0) = x^((0))$), $"Re" lambda_j > 0, space j=1,...,m$.
+
+  Тогда $exists M, alpha >0$:
+  
+  $abs(phi(t)) <= M abs(x^((0))) e^(-alpha t)$
+][
+  $ phi(t) = Phi(t) x^((0)) $
+
+  $ Phi(t)  = e^(t A) quad der(Phi) = A Phi quad Phi(0) = I $
+
+  $ abs(phi(t)) <= norm(Phi(t)) dot abs(x^((0))) $
+
+  $ norm(Phi(t)) <= M e^(alpha t) space qed$
+]
+
+#bbbox[Теорема об асимтотической устойчивости системы (1)][
+  Решение $x(s) equiv 0$ асимтотически устойчивое
+  $ <=> $
+  $"Re" lambda_j < 0, space j = 1, dots, m $
+][
+  $ (arrow.double.l):$
+
+  $ abs(phi(t)) <= M abs(x^((0))) e^(-alpha t) $
+
+  $ forall epsilon > 0, space delta_epsilon = epsilon/M $
+
+  Если $abs(x^((0))) < delta_epsilon = epsilon/M =>$
+
+  $ abs(phi(t)) <= M dot epsilon/M e^(-alpha t) < epsilon -> 0$
+][
+  $(=>:)$
+
+  Предположим противное. Пусть $"Re" lambda_1 = mu_1 >= 0$.
+  
+  Тогда $exists h in CC^n quad h = h^((1)) + i h^((2))$
+  
+  $A h = lambda_1 h$
+
+  $ x(t) = "Re" (h e^(lambda_1 t)) = "Re" ((h^((1)) + i h^((2)) )e^((mu_1 + nu_1)t)) = \
+  = e^(mu_1 t) (h^((1)) cos nu_1 t - h^((2)) sin nu_1 t) cancel(->) 0, space t->+oo
+  
+  $
+
+  $ forall c = "const" quad phi(t) = c hat(x)(t) - "решение" $
+
+  $ abs(phi(0)) <= c abs(hat(x)(0)) - "сколь угодно малое при маленьких" с $
+
+  $ phi(t) cancel(->) 0, space t->oo $
+
+  Получили противоречие.
+]
+
+#note[
+  Решение $x_s equiv 0$ устойчиво по Ляпунову
+
+  $=>$
+
+  $"Re" lambda_j <= 0, space j = 1, dots, m$
+]
+
+== Функция Ляпунова
