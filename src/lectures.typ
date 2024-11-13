@@ -1070,7 +1070,7 @@ $ x(t) = vec(x_1 (t), dots.v, x_n (t)), quad f(t, x) = vec(f_1 (t, x), dots.v, f
 
   Решение $x_0 = 1$ асимтотически устойчивое.
 
-  Решение $x_0 = 0$ неустойчивое, потому что если придать небольшую флуктуацию, то решение сольётся в экстазе с единичкой не бесконечности.
+  Решение $x_0 = 0$ неустойчивое, потому что если придать небольшую флуктуацию, то решение сольётся в экстазе с единичкой на бесконечности.
 ]
 
 #bbbox[
@@ -1194,4 +1194,207 @@ $ x_s = 0 - "устойчиво или нет? будем изучать" $
   $"Re" lambda_j <= 0, space j = 1, dots, m$
 ]
 
+`8 Октября 2024`
 == Функция Ляпунова
+
+$ (1) quad der(x) = f(t, x), space t > 0 $
+$ f(t, 0) = 0 $
+
+$ x_s (t) = 0, space t > 0 - "стационарное решение" $
+
+$ f: [0,+oo] times {abs(x) <= r} $
+
+$ abs(x)^2 = sum_(j=1)^n x_j^2 - "обычная Евклидова норма" $
+
+#def[
+  $ V(x), space x in B = {abs(x) <= r} subset RR^n $
+  --- функция Ляпунова, если:
+  + $V in C^1(B), space V(x) >= 0, space V(0) = 0, space V(x) > 0, space x!=0$
+  + $f(t, x) dot gradient V(x) <= 0, space x in B, space t >= 0$
+]
+
+#bbbox[Лемма Ляпунова][
+  Пусть $exists$ функция Ляпунова для системы (1).\
+  Тогда решение $x_s equiv 0$ устойчиво по Ляпунову\
+  Если дополнительно $exists W(x), space x in B, space W in C(B), space W(0) = 0$\
+  $W(x) > 0, space x != 0$ и при этом
+  $f(x, t) gradient V(x) <= -W(x), space x in B$\
+  Тогда $x_s$ ещё и асимптотически устойчиво.
+]
+
+В данном случае устойчивость по Ляпунову для стационарного решения:
+
+$ forall epsilon > 0 quad exists delta > 0\
+quad forall "реш (1)", abs(x(0)) < delta_epsilon => abs(x(t)) < epsilon, space t > 0 $
+
+Асимптотическая устойчивость --- добавляем:
+
+$ lim_(t->oo) abs(x(t)) = 0 $
+
+Доказателство леммы Ляпунова. Для этого рассмотрим сферу радиуса $epsilon$. Пусть $epsilon in (0, r)$, $delta_epsilon = {x in RR^n : abs(x) = epsilon}$,
+$V_epsilon = min_(x in delta_epsilon V(x))$
+
+// 
+#figure(image("image (7).png", width: 60%))
+
+Выбор $delta_epsilon$: $space V(x) < V_epsilon, " если" abs(x) < delta_epsilon$ 
+
+#figure(image("image (8).png", width: 60%))
+
+$"Пусть" x := phi(t), space t>0 - "решение (1)", space abs(x(0)) < delta_epsilon.$
+
+1. Решение $phi(t)$ дейстивтельно определено при $t>0$
+
+Предположим противное, тогда $exists t_1 >0, space abs(phi(t)) -> +oo, space t->t_1$.
+Отсюда вытекает, что $exists t_0 > 0, space abs(phi(t_0)) = epsilon$.
+В желудок Ляпунова затолкали решение:
+$ mu(t) = V(phi(t)), \
+mu'(t) = sum_(1)^n (diff V)/(diff x_j) der(phi)_j = f dot gradient V <= 0 
+=> mu(t) "не возрастает!"
+$
+
+$ V_epsilon > V(phi(0)) = mu(0) >= mu(t_0) = V(phi(t_0)) >= V_epsilon $
+
+Вот и получили противоречие.
+
+2. $exists.not t_0: abs(phi(t_0)) = epsilon => abs(phi(t)) < epsilon, space t > 0$
+
+Доказали устойчивость, теперь покажем, что предел решения на бесконечности равен нулю (асимптотическая устойчивость):
+
+$ abs(phi(t)) -> 0, space t -> 0 $.
+
+#bbbox[Утверждение][
+  $ lim_(t->+oo) V(phi(t)) = 0 $
+]
+
+Воспользуемся этим утверждением. Предположим противное:
+
+$ abs(phi(t)) arrow.not 0, space t -> +oo => exists t_k -> +oo space abs(phi(t_k)) >= eta > 0 $
+
+$ beta = min_(eta < abs(x) < beta) V(x) $
+
+$ V(phi(t_k)) >= beta > 0 space forall k $
+
+$ t_k -> +oo $
+
+#figure(image("image (9).png", width: 50%))
+
+Получили противоречие утверждению.
+
+$ f gradient V <= - W $
+
+Теперь докажем само утверждение.
+
+$ lim_(t->oo) V(phi(t)) = 0 $
+
+Предположим противное $mu(t) = V(phi(t))$ не возрастающая.
+Тогда $lim_(t->+oo) mu(t) = alpha > 0$.
+
+$ mu(t) >= alpha, space t > 0 $
+
+$ V(phi(t)) >= alpha > 0 $
+
+$ 0 < sigma < abs(phi(t)) < epsilon $
+
+$ A:= min_(sigma < abs(x) < epsilon) W(x) $
+
+Продифференцируем $mu$:
+
+$ mu'(t) = f gradient V <= -W <= -A $
+
+$ mu'(t) <= -A $
+
+Если это неравенство проинтегрировать. 
+
+$ mu(t) - mu(t_*) <= - A(t - t_*) $
+
+Если в этом неравенстве $t -> +oo$,
+тогда $mu(t) -> -oo$. Но оно не может стремиться к $-oo$, потому что она отрицательной быть не может. Мораль --- получили противоречие.
+
+Сейчас пойдут примеры.
+
+#bbbox[Пример 1][
+  $ cases(
+    der(x)_1 = x_1 x_2^4,
+    der(x)_2 = -x_1^2 x_2
+  ) $
+
+  $ x_s = vec(0, 0) - "стационарное решение, положение равновесия" $
+
+  Подобрать функцию --- это искусство.
+  
+  $ V(x) = x_1^2 + x_2^4 $
+
+  Проверим, будет ли она функцией Ляпунова или нет.
+
+  $ V(0) = 0 $
+
+  $ V(x) > 0, space x != 0 $
+
+  $ f gradient V = x_1 x_2^4 dot 2 x_1 + (-x_1^2  x_2 dot 4 x_2^3) = -2x_1^2 x_2^4 <= 0 $
+
+  $ => x_s = 0 "устойчиво" $
+  
+]
+
+#bbbox[Пример 2][
+  $ der(x) = -g(x) comma space x = x(t) in RR comma space t>0 $
+  $ g(0) = 0, space x g(x) > 0, space forall x != 0, space abs(x) <= r, space g - "липш." $
+  $ V(x) = integral_0^x g(s) dif s $
+
+  $ V(0) = 0 $
+
+  $ V(x) > 0, space x != 0 "очев, подумайте" $
+
+  $ f gradient V = - g(x) = -g^2(x) <= 0 $
+
+  $ W(x) := g^2 (x) $
+
+  Тогда решение ещё и асимптотически устойчиво:
+
+  $ f gradient V <= -W $
+]
+
+#bbbox[Пример (маятник)][
+
+#figure(image("image (10).png", width: 30%))
+
+$ m l der2(phi) = - m g sin(phi) $
+
+$ der2(phi) = -g/l sin phi - b der(phi) $
+
+$ a = g/l = omega^2 $
+
+$ x_1 = phi, space x_2 = der(phi) $
+
+$ a, b>0, space abs(x_1) < pi/2 $
+
+$ cases(
+    der(x)_1 = x_2,
+    der(x)_2 = -a sin x_1 - b x_2 
+    
+) 
+quad x_s = vec(0, 0) - "стационарное решение"
+
+$
+
+1. $V(x) = a(1 - cos x_1) + 1/2 x_2^2$
+
+   $V(0) = 0, space V(x) > 0, space x!=0$
+
+   $f gradient V = x_2 a sin x_1 + (-a sin x_1 - b x_2) x_2 = -b x_2^2 <= 0 $
+
+Должна быть асимтотическая устойчиовть (физическая чуйка). Определяется хитрая функция Ляпунова:
+
+2. $V(x) = a(1 - cos x_1) + 1/2 x P x$
+
+   $ P = mat(b^2/2, b/2; b/2,1 ) - "положительно определённая"$
+
+   $f gradient V = -1/2 a b x_1 sin x_1 - 1/2 b x_2^2 <= 0$
+
+   $-W(x) := -1/2 a b x_1 sin x_1 - 1/2 b x_2^2$
+
+   $f gradient V <= -W$
+
+   $x_s -$ асимптотически устойчивое решение.
+]
