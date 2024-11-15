@@ -1232,7 +1232,7 @@ quad forall "реш (1)", abs(x(0)) < delta_epsilon => abs(x(t)) < epsilon, spac
 $ lim_(t->oo) abs(x(t)) = 0 $
 
 Доказателство леммы Ляпунова. Для этого рассмотрим сферу радиуса $epsilon$. Пусть $epsilon in (0, r)$, $delta_epsilon = {x in RR^n : abs(x) = epsilon}$,
-$V_epsilon = min_(x in delta_epsilon V(x))$
+$V_epsilon = min_(x in delta_epsilon) V(x)$
 
 // 
 #figure(image("image (7).png", width: 60%))
@@ -1243,7 +1243,7 @@ $V_epsilon = min_(x in delta_epsilon V(x))$
 
 $"Пусть" x := phi(t), space t>0 - "решение (1)", space abs(x(0)) < delta_epsilon.$
 
-1. Решение $phi(t)$ дейстивтельно определено при $t>0$
+1. Решение $phi(t)$ действительно определено при $t>0$
 
 Предположим противное, тогда $exists t_1 >0, space abs(phi(t)) -> +oo, space t->t_1$.
 Отсюда вытекает, что $exists t_0 > 0, space abs(phi(t_0)) = epsilon$.
@@ -1346,7 +1346,7 @@ $ mu(t) - mu(t_*) <= - A(t - t_*) $
 
   $ V(x) > 0, space x != 0 "очев, подумайте" $
 
-  $ f gradient V = - g(x) = -g^2(x) <= 0 $
+  $ f gradient V = -g^2(x) <= 0 $
 
   $ W(x) := g^2 (x) $
 
@@ -1398,3 +1398,221 @@ $
 
    $x_s -$ асимптотически устойчивое решение.
 ]
+
+\
+`15 Октября 2024`
+== Экспоненциальная устойчивость динамических систем
+
+Речь идёт о следующей системе:
+
+$ (1) quad der(x) = f(x), space t > 0 $
+
+$ x(t) = vec(x_1 (t), dots.v, x_n (t)) quad f(x) = vec(f_1 (x), dots.v, f_n (x)) $
+
+Правая часть не зависит от $t$. Это динамическая (или автономная) система.
+
+$ f(0) = 0 quad x_s equiv 0 - "стационарное решение" $
+
+#bbbox[Пример 1][
+  $ cases(
+      der(x)_1 = x_2 &| dot x_1,
+      der(x)_2 = -x_1 &| dot x_2
+  ) $
+  Изобразим фазовый портрет.
+
+  $ der(x)_1 x_1 + der(x)_2 x_2 = 0 $
+
+  $ 1/2 (dif)/(dif t) (x_1^2 + x_2^2) = 0 $
+
+  $ x_1^2 + x_2^2 = C = "const" $
+
+  Вот этот рисунок --- фазовый портрет. Решения $x_1, x_2$ --- фазовые переменные.
+
+  #figure(image("image (11).png", width: 50%))
+
+  Решение устойчиво по Ляпунову, но не устойчиво асимптотически.
+]
+
+#bbbox[Пример 2][
+  $ cases(
+      der(x)_1 = -x_2 &| dot x_1,
+      der(x)_2 = -x_1 &| dot x_2
+  ) $  
+
+  $ x_1 der(x)_1 - x_2 der(x)_2 = 0 $
+
+  $ 1/2 dif/(dif t) (x_1^2 - x_2^2) = 0 $
+
+  $ x_1^2 - x_2^2 = C = "const" $
+
+  #figure(image("image (12).png", width: 70%))
+
+  Решение этой системы не устойчиво по Ляпунову.
+]
+
+Сформулируем теорему для экспоненциальной устойчивости нулевого решения.
+
+#bbbox[Теорема][
+  Пусть существует функция Ляпунова для системы (1),
+  $ f gradient V <= - alpha V quad (alpha > 0) $
+
+  И выполняется:
+
+  $ C_1 abs(x)^2 <= V(x) <= C_2 abs(x)^2 $
+
+  Тогда:\
+  Существует константа $M > 0$, что
+
+  $ abs(x(t)) <= M  e^(-alpha/2 t) abs(x(0)) $
+][
+  Пусть $ x = x(t), space t >= 0 - "решение 1" $
+
+  $ mu(t) = V(x(t)) $
+
+  $ mu'(t) = sum_1^n V'_x_j der(x)_j = f gradient V <= alpha V(x(t)) $
+
+  $ mu'(t) <= alpha mu(t) $
+
+  $ (mu' + alpha mu) e^(alpha t) <= 0 $
+
+  $ (mu(t) e^(alpha t))' <= 0 $
+
+  $ mu(t) e^(alpha t) <= mu(0) $
+
+  $ mu(t) = V(x(t)) <= mu(0) = V(x(0))e^(-alpha t) $
+
+  Теперь неравенство с $C_1$ и $C_2$ применяем:
+
+  $ C_1 abs(x(t))^2 <= mu(t) = V(x(t)) <= mu(0) = V(x(0))e^(-alpha t) <= C_2 abs(x(0))^2  e^(-alpha t) $
+
+]
+
+#bbbox[Пример][
+  $ cases(
+    der(x)_1 = -x_1 + g(x_2),
+    der(x)_2 = -x_2 + h(x_1)
+  ) $
+
+  $ abs(g(s)) <= 1/2 abs(s), space abs(h(s)) <= 1/2 abs(s) $
+
+  Пусть $V(x) = 1/2 (x_1^2 + x_2^2) = 1/2 abs(x)^2$
+
+  $ f gradient V = (-x_1 + g(x_2)) x_1 + (-x_2 + h(x_1))x_2 <=\
+    <= -(x_1^2+x_2^2) + 1/2 abs(x_1 x_2) + 1/2 abs(x_1 x_2) <= $
+Пользуясь $abs(x_1 x_2) <= 1/2 (x_1^2 + x_2^2)$
+
+  $ <= -1/2 (x_1^2 + x_2^2) = -V(x) $
+
+  Решение является экспоненциально устойчивым.
+
+  $ V(x) <= V(0) e^(-t) $
+]
+
+== Анализ устойчивости по первому приближению.
+
+Есть такая замечательная формула:
+
+$ f(x) = f(0) + (diff f)/(diff x)(0) x + o(abs(x)) $
+
+$ f: RR^n -> RR^n $
+
+$ A = (diff f)/(diff x)(0) = (((diff f_k)/(diff x_j)(0)))_(k,j=1,dots,n) - "матрица Якоби" $
+
+$ f(x) = A x + g(x), space g(x) = o(abs(x)) $
+
+$ f(0) = 0 $
+
+$ (1) quad der(x) = f(x) $
+
+$ f(0) = 0, space x_s equiv 0 - "стационарное решение" $
+
+$ (1) quad der(x) = A x + g(x) $
+
+// #note[
+//   Пусть $f(0) = f_0 != 0$.\
+//   $ f(x_s) = 0$, то есть $x_s$ --- стационарное решение.\
+
+//   $ y(t) = x(t) - x_s $
+
+//   $ f(y) = f(y + x_s) ,  $
+// ]
+
+#bbbox[Теорема][
+  Пусть $ lambda_k, space k=1,dots,n - "собственные числа" $
+
+  $ A = (diff f)/(diff x)(0), space "Re" lambda_k  < 0 $
+
+  $ exists M, alpha, r > 0 $
+
+  $ abs(g(x)) <= M abs(x)^(1+alpha), space abs(x) <= r $
+
+  Тогда $x_s = 0 $ асимптотически устойчиво.
+]
+
+#bbbox[Лемма Гронуолла][
+  Пусть есть интегральное неравенство для неотрицательной функции:
+
+  $ 0 <= A(t) <= C_1 + C_2 integral_0^t A(s) dif s,quad  t, C_1, C_2 >= 0 $
+
+  Тогда:
+
+  $ A(t) <= C_1 e^(C_2t) $
+][
+  $ W(t) :=  C_1 + C_2 integral_0^t A(s) dif s $
+
+  $ A(t) <= W(t) $
+
+  $ W'(t) = C_2 A(t) <=C_2 W(t)  $
+
+  $ A(t) <= W(t) <= W(0) e^(C_2 t) = C_1 e^(C_2 t) $
+][
+  Следствие: $C_1 = 0 space => space A(t) = 0$
+]
+
+Доказываем теорему:
+
+$ der(x) - A x = g(x) $
+
+$ e^(-t A)(der(x) - A x) = e^(-t A) g(x) $
+
+$ dif / (dif t) (e^(-t A) x(t)) = e(-t A) g(x(t)) $
+
+$ e^(-t A) x(t) = x(0) = integral_0^t e^(-s A) g(x(s)) dif s $
+
+$ (2) quad x(t) = e^(t A) x(0) + integral_0^t e^(-(s-t)A) g(x(s)) dif s $
+
+$ mu > 0 $
+
+$ norm(e^(t A)) <= K e^(-mu t) $
+
+#figure(image("image (13).png", width: 70%))
+
+Пусть $delta > 0$, $abs(x(0)) < delta / k <= delta < r$
+
+$ abs(x(t)) <= S, space t in [0, t_k
+] $
+
+#figure(image("image (14).png", width: 60%))
+
+
+$ abs(x(t_*)) = S $
+
+$ A(t) = e^(mu t) abs(x(t)) $
+
+$ A(t) <= K e^(-mu t) e^(mu t) abs(x(0)) + integral_0^t M abs(x(s))^(1+alpha) K A(s) dif s $
+
+$ abs(x(0)) <= delta^alpha $
+
+По лемме Гронуолла:
+
+$ A(t) <= K abs(x(0)) e^(M K delta^alpha t) $
+
+Выбираем $delta: M K delta^alpha < mu/2$
+
+$ e^(mu t) abs(x(t)) <= K abs(x(0)) e^(-mu/2 t) $
+
+$ abs(x(t)) <= K abs(x_0) e^(-mu/2 t) $
+
+Это неравенство доказывает асимптотическую устойчивость. Что и требовалось доказать.
+
+Вопросы??? Перерыв.
